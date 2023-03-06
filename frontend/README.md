@@ -1,6 +1,6 @@
-# frontend (frontend)
+# RastaRoots (frontend)
 
-frontend for T-WEB
+Projet web epitech T-WEB
 
 ## Install the dependencies
 ```bash

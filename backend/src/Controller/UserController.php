@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\Constructeur;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,13 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
 
-	function __construct(EntityManagerInterface $mysql)
+	function __construct(EntityManagerInterface $mysql, Constructeur $construct)
 	{
 		$this->mysql = $mysql;
+		$this->construct = $construct;
 	}
 
 	/**
-	 * @Route("/create", name="create")
+	 * @Route("/create", name="create", methods={"POST"})
 	 */
 	public function create(Request $request): Response
 	{
@@ -31,13 +33,18 @@ class UserController extends AbstractController
 
 		// Check if username or password is empty
 		if (empty($data['username']) || empty($data['password'])) {
-			return new Response(Response::HTTP_BAD_REQUEST);
+			return $this->construct->erreur(Response::HTTP_BAD_REQUEST, 'Merci de remplir tous les champs !');
+		}
+
+		// Check if password and passwordConfirm are the same
+		if ($data['password'] !== $data['passwordConfirm']) {
+			return $this->construct->erreur(Response::HTTP_BAD_REQUEST, 'Les mots de passe ne correspondent pas !');
 		}
 
 		// Check if username already exists
 		$existingUser = $this->mysql->getRepository(User::class)->findOneBy(['username' => $data['username']]);
 		if ($existingUser) {
-			return new Response(Response::HTTP_CONFLICT);
+			return $this->construct->erreur(Response::HTTP_CONFLICT, 'Ce nom d\'utilisateur est déjà utilisé !');
 		}
 
 		$user->setPassword(hash('sha256', $data['password']));

@@ -2,10 +2,18 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    name: 'Disconnected',
+    component: () => import('layouts/Disconnected'),
     children: [
-      { path: '', component: () => import('pages/Accueil.vue') },
-      { path: 'inscription', component: () => import('pages/Inscription.vue'), name: 'InscriptionPage' }
+      { path: '', component: () => import('pages/Accueil.vue'), name: 'AccueilDisconnected' }
+    ]
+  },
+  {
+    path: '/connected',
+    name: 'Connected',
+    component: () => import('layouts/Connected'),
+    children: [
+      { path: '', component: () => import('pages/Accueil.vue'), name: 'AccueilConnected' }
     ]
   },
 

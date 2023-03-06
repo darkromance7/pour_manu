@@ -156,9 +156,9 @@ module.exports = configure(function (ctx) {
 
 
       manifest: {
-        name: `frontend`,
-        short_name: `frontend`,
-        description: `frontend for T-WEB`,
+        name: `RastaRoots`,
+        short_name: `RastaRoots`,
+        description: `Projet web epitech T-WEB`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
